@@ -1,12 +1,14 @@
 import {
   USERNAME_SET,
   LOBBY_USERS,
-  USER_DISCONNECTED
+  USER_DISCONNECTED,
+  INVITE_RECEIVED
 } from './op';
 
 const initialState = {
   username : '',
   users : [], // in lobby
+  invitesFrom : null, // set when someone invites you to game
 };
 
 const reducers = (state = initialState, action) => {
@@ -33,6 +35,12 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         users : action.users
+      };
+
+    case INVITE_RECEIVED: // OP
+      return {
+        ...state,
+        invitesFrom : action.sender
       };
 
     default: return state;

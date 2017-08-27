@@ -4,13 +4,18 @@ const url = require('url');
 const WebSocket = require('ws');
 const PORT = process.env.PORT || 3000;
 const app = express();
+const Room = require('./Room');
 
 // app.use(express.static('./public'));
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-const users = [];
+let users = [];
+
+// key is Room.id
+// value is the room
+const rooms = new Map();
 
 wss.on('connection', function connection(ws, req) {
   // const location = url.parse(req.url, true);
@@ -59,7 +64,7 @@ wss.on('connection', function connection(ws, req) {
         break;
       case 'INVITE_USER':
         // find the user
-        const invitedUser = users.find( user => user.username = payload.username );
+        const invitedUser = users.find( user => user.username === payload.username );
         if( invitedUser !== null ){
           // send an OP to that user
           invitedUser.send(
@@ -76,6 +81,51 @@ wss.on('connection', function connection(ws, req) {
             })
           );
         }
+        break;
+      case 'ACCEPT_INVITE':
+        // find the user
+        const sender = users.find( user => user.username === payload.username );
+        if( sender !== null ){
+          // create the room,
+          //   put both players in it
+          //   remove from lobby
+          const newRoom = new Room(sender, ws);
+          // track the room in the map
+          rooms.set(newRoom.id, newRoom);
+
+          // remove both players from lobby
+          users = users.filter( user => user.username !== ws.username && user.username !== sender.username );
+
+        } else {
+          ws.send(
+            JSON.stringify({
+              OP: 'ERROR',
+              message: 'sender is not found or has disconnected'
+            })
+          );
+        }
+
+        break;
+      case 'DECLINE_INVITE':
+        const declinedSender = users.find( user => user.username = payload.username );
+        if( declinedSender !== null ){
+          declinedSender.send(
+            JSON.stringify({
+              OP: 'INVITE_DECLINED',
+              username: ws.username
+            })
+          );
+
+        } else {
+          ws.send(
+            JSON.stringify({
+              OP: 'ERROR',
+              message: 'sender is not found or has disconnected'
+            })
+          );
+        }
+
+
         break;
       case 'SET_USERNAME': // doing too much!?!?
         ws.username = payload.username;

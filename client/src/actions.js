@@ -46,3 +46,25 @@ export const inviteUser = (selectedUser) => dispatch => {
   );
 
 };
+
+export const acceptInvite = (invitesFrom) => dispatch => {
+
+  socket.send(
+    JSON.stringify({
+      OP: 'ACCEPT_INVITE',
+      username : invitesFrom
+    })
+  );
+
+};
+
+export const declineInvite = (invitesFrom) => dispatch => {
+
+  socket.send(
+    JSON.stringify({
+      OP: 'DECLINE_INVITE',
+      username : invitesFrom
+    })
+  );
+
+};
