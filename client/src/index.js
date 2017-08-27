@@ -5,7 +5,8 @@ import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter, Route } from 'react-router-dom';
 import reducers from './reducers';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import ReduxThunk from 'redux-thunk';
 import * as reduxDevTools from 'redux-devtools';
 import App from './containers/App';
 import Lobby from './containers/Lobby';
@@ -13,7 +14,8 @@ import logo from './logo.svg';
 
 let store = createStore(
   reducers,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(ReduxThunk)
 );
 
 const Root = ({ store }) => (

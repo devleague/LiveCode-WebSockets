@@ -15,11 +15,12 @@ const users = [];
 wss.on('connection', function connection(ws, req) {
   // const location = url.parse(req.url, true);
 
+  // ws is current user
   users.push(ws);
 
   ws.on('message', function incoming(message) {
     const payload = JSON.parse(message);
-    // console.log('received: %s', payload);
+    console.log('received: %s', payload);
 
     switch (payload.OP) {
       case 'CREATE_ROOM':
@@ -40,6 +41,15 @@ wss.on('connection', function connection(ws, req) {
             })
           );
         });
+        break;
+      case 'SET_USERNAME':
+        ws.username = payload.username;
+        ws.send(
+          JSON.stringify({
+            OP: 'USERNAME_SET',
+            username: payload.username
+          })
+        );
         break;
       case 'CONNECTED':
         console.log('a user has connected');

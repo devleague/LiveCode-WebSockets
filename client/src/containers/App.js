@@ -8,19 +8,18 @@ class AppContainer extends Component {
     super(props);
 
     this.state = {
-      username : ''
+      newUsername : ''
     };
 
     this.onSubmit = this.onSubmit.bind(this);
     this.usernameChange = this.usernameChange.bind(this);
   }
   onSubmit(e){
+    e.preventDefault();
+
     this.props.setUsername(this.state.newUsername);
 
     this.props.history.push('/lobby');
-
-
-    e.preventDefault();
   }
   usernameChange(e){
     this.setState({
@@ -36,7 +35,7 @@ class AppContainer extends Component {
         <div>
           <input
             type="text"
-            name="username"
+            id="username"
             onChange={this.usernameChange}
             value={this.state.newUsername} />
         </div>

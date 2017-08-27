@@ -12,11 +12,6 @@ class LobbyContainer extends Component {
 
     // this.usernameChange = this.usernameChange.bind(this);
   }
-  usernameChange(e){
-    this.setState({
-      newUsername: e.target.value
-    });
-  }
   render() {
     return (
       <div>

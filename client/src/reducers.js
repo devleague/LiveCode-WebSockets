@@ -1,4 +1,4 @@
-import { SET_USERNAME } from './actions';
+import { USERNAME_SET } from './actions';
 
 const initialState = {
   username : ''
@@ -7,11 +7,13 @@ const initialState = {
 const reducers = (state = initialState, action) => {
 
   switch(action.type){
-    case SET_USERNAME:
+
+    case USERNAME_SET: // OP
       return {
         ...state,
         username : action.username
       };
+
   }
 
   return state;
