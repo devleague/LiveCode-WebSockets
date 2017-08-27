@@ -8,6 +8,8 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import * as reduxDevTools from 'redux-devtools';
 import App from './containers/App';
+import Lobby from './containers/Lobby';
+import logo from './logo.svg';
 
 let store = createStore(
   reducers,
@@ -17,8 +19,15 @@ let store = createStore(
 const Root = ({ store }) => (
   <Provider store={store}>
     <BrowserRouter>
-      <div>
-        <Route path="/" component={App} />
+      <div className="App">
+        <div className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h2>Welcome to React Websockets Demo</h2>
+        </div>
+        <div className="App-intro">
+          <Route exact path="/" component={App} />
+          <Route exact path="/lobby" component={Lobby} />
+        </div>
       </div>
     </BrowserRouter>
   </Provider>

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { setUsername } from '../actions';
-import logo from './logo.svg';
 import './App.css';
 
 class AppContainer extends Component {
@@ -18,6 +17,9 @@ class AppContainer extends Component {
   onSubmit(e){
     this.props.setUsername(this.state.newUsername);
 
+    this.props.history.push('/lobby');
+
+
     e.preventDefault();
   }
   usernameChange(e){
@@ -27,29 +29,21 @@ class AppContainer extends Component {
   }
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React Websockets Demo</h2>
+      <form action="#" onSubmit={this.onSubmit}>
+        <div>
+          <label htmlFor="username">Enter your username</label>
         </div>
-        <div className="App-intro">
-          <form action="#" onSubmit={this.onSubmit}>
-            <div>
-              <label htmlFor="username">Enter your username</label>
-            </div>
-            <div>
-              <input
-                type="text"
-                name="username"
-                onChange={this.usernameChange}
-                value={this.state.newUsername} />
-            </div>
-            <div>
-              <button type="submit">Login</button>
-            </div>
-          </form>
+        <div>
+          <input
+            type="text"
+            name="username"
+            onChange={this.usernameChange}
+            value={this.state.newUsername} />
         </div>
-      </div>
+        <div>
+          <button type="submit">Login</button>
+        </div>
+      </form>
     );
   }
 }
