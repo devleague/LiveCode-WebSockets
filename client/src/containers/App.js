@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { setUsername } from '../actions';
 import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
+class AppContainer extends Component {
   constructor(props){
     super(props);
 
@@ -14,13 +16,13 @@ class App extends Component {
     this.usernameChange = this.usernameChange.bind(this);
   }
   onSubmit(e){
-    console.log(`Logging in as ${this.state.username}`);
+    this.props.setUsername(this.state.newUsername);
 
     e.preventDefault();
   }
   usernameChange(e){
     this.setState({
-      username: e.target.value
+      newUsername: e.target.value
     });
   }
   render() {
@@ -40,7 +42,7 @@ class App extends Component {
                 type="text"
                 name="username"
                 onChange={this.usernameChange}
-                value={this.state.username} />
+                value={this.state.newUsername} />
             </div>
             <div>
               <button type="submit">Login</button>
@@ -51,5 +53,24 @@ class App extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    username: state.username
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUsername: username => {
+      dispatch(setUsername(username))
+    }
+  }
+}
+
+const App = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppContainer);
 
 export default App;
