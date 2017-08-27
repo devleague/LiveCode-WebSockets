@@ -10,6 +10,7 @@ import ReduxThunk from 'redux-thunk';
 import * as reduxDevTools from 'redux-devtools';
 import App from './containers/App';
 import Lobby from './containers/Lobby';
+import Room from './containers/Room';
 import logo from './logo.svg';
 
 let store = createStore(
@@ -29,6 +30,7 @@ const Root = ({ store }) => (
         <div className="App-intro">
           <Route exact path="/" component={App} />
           <Route exact path="/lobby" component={Lobby} />
+          <Route exact path="/room" component={Room} />
         </div>
       </div>
     </BrowserRouter>

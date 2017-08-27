@@ -32,6 +32,9 @@ class LobbyContainer extends Component {
     this.props.declineInvite( this.props.invitesFrom );
   }
   render() {
+    if(this.props.goToRoom){
+      this.props.history.push('/room');
+    }
     return (
       <div>
         <div>You are logged in as: {this.props.username}</div>
@@ -72,7 +75,8 @@ const mapStateToProps = state => {
   return {
     username: state.username,
     users: state.users,
-    invitesFrom : state.invitesFrom
+    invitesFrom : state.invitesFrom,
+    goToRoom : state.goToRoom
   }
 }
 
