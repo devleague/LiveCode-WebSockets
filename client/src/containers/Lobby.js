@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { setUsername } from '../actions';
+import { inviteUser } from '../actions';
 
 class LobbyContainer extends Component {
   constructor(props){
@@ -11,9 +11,17 @@ class LobbyContainer extends Component {
     };
 
     this.selectUser = this.selectUser.bind(this);
+    this.onInvite = this.onInvite.bind(this);
   }
   selectUser(username){
-    console.log('selected', username);
+    return () => { // onClick handler
+      this.setState({
+        selectedUser : username
+      });
+    }
+  }
+  onInvite(){
+    this.props.inviteUser( this.state.selectedUser );
   }
   render() {
     return (
@@ -25,12 +33,16 @@ class LobbyContainer extends Component {
               this.props.users
                 .filter( username => username !== this.props.username )
                 .map( username =>
-                  <li onClick={this.selectUser(username)}>
+                  <li
+                    onClick={this.selectUser(username)}
+                    className={ this.state.selectedUser === username ? 'selectedUser' : '' }
+                    style={{cursor:'pointer'}}>
                     { username }
                   </li>
               )
             }
           </ul>
+          <button onClick={this.onInvite} type="button">Invite to Game</button>
         </div>
       </div>
     );
@@ -46,9 +58,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // setUsername: username => {
-    //   dispatch(setUsername(username))
-    // }
+    inviteUser: selectedUser => {
+      dispatch(inviteUser(selectedUser))
+    }
   }
 }
 

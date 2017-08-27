@@ -57,6 +57,26 @@ wss.on('connection', function connection(ws, req) {
           );
         });
         break;
+      case 'INVITE_USER':
+        // find the user
+        const invitedUser = users.find( user => user.username = payload.username );
+        if( invitedUser !== null ){
+          // send an OP to that user
+          invitedUser.send(
+            JSON.stringify({
+              OP: 'INVITE_RECEIVED',
+              sender: ws.username
+            })
+          );
+        } else {
+          ws.send(
+            JSON.stringify({
+              OP: 'ERROR',
+              message: 'username is not found or has disconnected'
+            })
+          );
+        }
+        break;
       case 'SET_USERNAME': // doing too much!?!?
         ws.username = payload.username;
 

@@ -35,3 +35,14 @@ export const setUsername = (username) => dispatch => {
   );
 
 };
+
+export const inviteUser = (selectedUser) => dispatch => {
+
+  socket.send(
+    JSON.stringify({
+      OP: 'INVITE_USER',
+      username : selectedUser
+    })
+  );
+
+};
