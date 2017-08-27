@@ -1,5 +1,5 @@
-export const USERNAME_SET = 'USERNAME_SET';
 
+// maybe move out later
 const socket = new WebSocket('ws://127.0.0.1:4000');
 
 // bind ws OP to dispatch

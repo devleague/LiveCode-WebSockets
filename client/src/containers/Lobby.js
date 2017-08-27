@@ -18,7 +18,13 @@ class LobbyContainer extends Component {
         <div>You are logged in as: {this.props.username}</div>
         <div>
           <ul>
-            <li></li>
+            {
+              this.props.users.map( username =>
+                <li>
+                  { username }
+                </li>
+              )
+            }
           </ul>
         </div>
       </div>
@@ -28,7 +34,8 @@ class LobbyContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    username: state.username
+    username: state.username,
+    users: state.users,
   }
 }
 

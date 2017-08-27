@@ -17,6 +17,8 @@ wss.on('connection', function connection(ws, req) {
 
   // ws is current user
   users.push(ws);
+  // initialize username as null
+  ws.username = null; // will be set later in SET_USERNAME
 
   ws.on('message', function incoming(message) {
     const payload = JSON.parse(message);
@@ -42,14 +44,28 @@ wss.on('connection', function connection(ws, req) {
           );
         });
         break;
-      case 'SET_USERNAME':
+      case 'SET_USERNAME': // doing too much!?!?
         ws.username = payload.username;
+
+        // confirm username is set
         ws.send(
           JSON.stringify({
             OP: 'USERNAME_SET',
             username: payload.username
           })
         );
+
+        // also, broadcast that a new user joined the lobby
+        // send current list of users
+        //   each user joining will send a new OP seperately
+        users.forEach(user => {
+          user.send(
+            JSON.stringify({
+              OP: 'LOBBY_USERS', // all users not in room
+              users: users.filter(user => user.username !== null).map(user => user.username) // only the names
+            })
+          );
+        });
         break;
       case 'CONNECTED':
         console.log('a user has connected');

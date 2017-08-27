@@ -1,7 +1,8 @@
-import { USERNAME_SET } from './actions';
+import { USERNAME_SET, LOBBY_USERS } from './op';
 
 const initialState = {
-  username : ''
+  username : '',
+  users : [], // in lobby
 };
 
 const reducers = (state = initialState, action) => {
@@ -12,6 +13,12 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         username : action.username
+      };
+
+    case LOBBY_USERS: // OP
+      return {
+        ...state,
+        users : action.users
       };
 
   }
