@@ -1,4 +1,8 @@
-import { USERNAME_SET, LOBBY_USERS } from './op';
+import {
+  USERNAME_SET,
+  LOBBY_USERS,
+  USER_DISCONNECTED
+} from './op';
 
 const initialState = {
   username : '',
@@ -15,15 +19,26 @@ const reducers = (state = initialState, action) => {
         username : action.username
       };
 
+    case USER_DISCONNECTED: // OP
+      if( action.username !== null ){
+        return {
+          ...state,
+          users : state.users.filter( user => user !== action.username )
+        };
+      } else {
+        return state;
+      }
+
     case LOBBY_USERS: // OP
       return {
         ...state,
         users : action.users
       };
 
+    default: return state;
+
   }
 
-  return state;
 }
 
 export default reducers;

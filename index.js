@@ -20,6 +20,19 @@ wss.on('connection', function connection(ws, req) {
   // initialize username as null
   ws.username = null; // will be set later in SET_USERNAME
 
+  ws.on('close', function (){
+    users.splice( users.indexOf(ws), 1 );
+    // also broadcast to all other users
+    users.forEach(user => {
+      user.send(
+        JSON.stringify({
+          OP: 'USER_DISCONNECTED', // all users not in room
+          username: ws.username // could be undefined
+        })
+      );
+    });
+  });
+
   ws.on('message', function incoming(message) {
     const payload = JSON.parse(message);
     console.log('received: %s', payload);

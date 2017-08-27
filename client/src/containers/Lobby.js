@@ -10,7 +10,10 @@ class LobbyContainer extends Component {
       selectedUser : null
     };
 
-    // this.usernameChange = this.usernameChange.bind(this);
+    this.selectUser = this.selectUser.bind(this);
+  }
+  selectUser(username){
+    console.log('selected', username);
   }
   render() {
     return (
@@ -19,10 +22,12 @@ class LobbyContainer extends Component {
         <div>
           <ul>
             {
-              this.props.users.map( username =>
-                <li>
-                  { username }
-                </li>
+              this.props.users
+                .filter( username => username !== this.props.username )
+                .map( username =>
+                  <li onClick={this.selectUser(username)}>
+                    { username }
+                  </li>
               )
             }
           </ul>
